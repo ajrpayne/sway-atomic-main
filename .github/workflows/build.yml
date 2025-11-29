@@ -1,17 +1,8 @@
 ---
 name: Build container image
 on:
-  pull_request:
-    branches:
-      - main
   schedule:
     - cron: '05 10 * * 6'  # 10:05am UTC everyday
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**/README.md'
-  workflow_dispatch:
 
 env:
   IMAGE_DESC: "My Customized Universal Blue Image"
