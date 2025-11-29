@@ -9,8 +9,153 @@ set -ouex pipefail
 # List of rpmfusion packages can be found here:
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
 
-# this installs a package from fedora repos
-dnf5 install -y tmux 
+dnf5 config-manager setopt fedora-cisco-openh264.enabled=0
+dnf5 swap -y noopenh264 mozilla-openh264
+
+# https://pagure.io/workstation-ostree-config/blob/f43/f/common.yaml
+dnf5 install -y \
+  git-core \
+  git-core-doc \
+  buildah \
+  podman \
+  skopeo \
+  slirp4netns \
+  fuse-overlayfs \
+  systemd-container \
+  langpacks-en
+
+# https://pagure.io/workstation-ostree-config/blob/f43/f/packages/common.yaml
+dnf5 install -y \
+  NetworkManager \
+  NetworkManager-bluetooth \
+  NetworkManager-config-connectivity-fedora \
+  NetworkManager-wifi \
+  NetworkManager-wwan \
+  bc \
+  hostname \
+  mtr
+
+# https://pagure.io/workstation-ostree-config/blob/f43/f/packages/sway-atomic.yaml
+dnf5 install -y \
+  NetworkManager-l2tp-gnome \
+  NetworkManager-libreswan-gnome \
+  NetworkManager-openconnect-gnome \
+  NetworkManager-openvpn-gnome \
+  NetworkManager-sstp-gnome \
+  NetworkManager-vpnc-gnome \
+  Thunar \
+  blueman \
+  bolt \
+  dunst \
+  foot \
+  fprintd-pam \
+  gnome-keyring-pam \
+  gnome-themes-extra \
+  grim \
+  gvfs \
+  gvfs-smb \
+  imv \
+  kanshi \
+  lxqt-policykit \
+  network-manager-applet \
+  pavucontrol \
+  pinentry-gnome3 \
+  playerctl \
+  plymouth-system-theme \
+  polkit \
+  pulseaudio-utils \
+  sddm \
+  sddm-wayland-sway \
+  slurp \
+  sway \
+  sway-config-fedora \
+  swaybg \
+  swayidle \
+  swaylock \
+  system-config-printer \
+  thunar-archive-plugin \
+  tuned-ppd \
+  tuned-switcher \
+  waybar \
+  wev \
+  wl-clipboard \
+  wlr-randr \
+  wlsunset \
+  xarchiver \
+  xdg-desktop-portal-gtk \
+  xdg-desktop-portal-wlr \
+  xorg-x11-server-Xwayland
+
+# https://github.com/ublue-os/main/blob/main/packages.json
+dnf5 install -y \
+  just \
+  tmux \
+  vim
+
+# https://github.com/ublue-os/main/blob/9a4fca91cf190dbfeba2ff0628cf75efdff8f31c/packages.json
+dnf5 install -y \
+  clipman \
+  gvfs-mtp \
+  thunar-volman \
+  tumbler
+
+dnf5 install -y \
+  NetworkManager-tui \
+  bat \
+  fish \
+  lua5.1 \
+  lua5.1-devel \
+  sqlite \
+  sqlite-devel \
+  neovim \
+  python3-pip \
+  python3-neovim \
+  stow \
+  make \
+  zig \
+  ripgrep \
+  go \
+  gdu \
+  tree-sitter-cli \
+  fd-find \
+  fzf \
+  kubernetes-client \
+  kustomize \
+  helm \
+  kind \
+  k9s \
+  yq \
+  thefuck \
+  distrobox \
+  fastfetch \
+  patch \
+  seahorse \
+  swappy \
+  ansible \
+  zoxide
+
+wget https://luarocks.org/releases/luarocks-3.12.2.tar.gz
+tar zxpf luarocks-3.12.2.tar.gz
+cd luarocks-3.12.2
+./configure --lua-version=5.1 --sysconfdir=/etc --prefix=/usr --rocks-tree=/usr/local && make && make install
+cd ..
+rm luarocks-3.12.2.tar.gz
+rm -rf luarocks-3.12.2
+
+# Citrix
+dnf5 install -y gtkglext-libs libcxx speexdsp xdpyinfo
+
+# wget \
+#   'https://downloads.citrix.com/25463/ICAClient-rhel-25.08.0.88-0.x86_64.rpm?__gda__=exp=1765003842~acl=/*~hmac=5b9f5e5c1c24429a94fc0fc00238e851961677ed557516a4632b52a7609ca332' \
+#   -O 'ICAClient-rhel-25.08.0.88-0.x86_64.rpm'
+# rpm -i --nodeps ./ICAClient-rhel-25.08.0.88-0.x86_64.rpm
+# rm ./ICAClient-rhel-25.08.0.88-0.x86_64.rpm
+# rpm -i --nodeps /ctx/ICAClient-rhel-25.08.0.88-0.x86_64.rpm
+
+# wget \
+#   'https://cdn.zoom.us/prod/vdi/6.3.13.26340/zoomvdi-universal-plugin-centos_6.3.13.rpm'
+# rpm -i ./zoomvdi-universal-plugin-centos_6.3.13.rpm
+# rm ./zoomvdi-universal-plugin-centos_6.3.13.rpm
 
 # Use a COPR Example:
 #
@@ -19,6 +164,32 @@ dnf5 install -y tmux
 # Disable COPRs so they don't end up enabled on the final image:
 # dnf5 -y copr disable ublue-os/staging
 
+# Ghostty
+dnf5 -y copr enable scottames/ghostty
+dnf5 install -y ghostty
+# Bottom
+dnf5 -y copr enable atim/bottom
+dnf5 install -y bottom
+# Starship
+dnf5 -y copr enable atim/starship
+dnf5 install -y starship
+# Lazygit
+dnf5 -y copr enable dejan/lazygit
+dnf5 install -y lazygit
+
+# Cliphist
+curl \
+  -Ls 'https://github.com/sentriz/cliphist/releases/download/v0.7.0/v0.7.0-linux-amd64' \
+  -o 'cliphist'
+mv cliphist /usr/bin/cliphist
+chmod +x /usr/bin/cliphist
+
+# Configs
+cp -r /ctx/etc/* /etc/
+
+sed -i 's|foot|ghostty|g' /etc/sway/config
+sed -i 's|default.jxl|default-dark.jxl|g' /etc/sway/config
+
 #### Example for enabling a System Unit File
 
-systemctl enable podman.socket
+# systemctl enable podman.socket
