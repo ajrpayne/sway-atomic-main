@@ -1,0 +1,102 @@
+#!/bin/bash
+
+set -ouex pipefail
+
+read -rp "Enter your GITHUB USER: " GITHUBUSER
+
+# Function to set up docker
+setup_docker() {
+  echo "Setting up docker..."
+
+  getent group docker || {
+    echo "docker group does not exist"
+    return 0
+  }
+  groups
+  sudo usermod -aG docker "$USER"
+}
+
+# Function to set up dotfiles-private
+setup_dotfiles_private() {
+  echo "Setting up dotfiles-private..."
+
+  if [ -d ~/.dotfiles-private ]; then
+    echo "dotfiles-private repository exists...."
+  else
+    echo "Cloning dotfiles-private repository..."
+    read -rp "Enter your GITHUB PAT: " GITHUBPAT
+    if ! git clone "https://$GITHUBUSER:$GITHUBPAT@github.com/$GITHUBUSER/.dotfiles-private.git" ~/.dotfiles-private; then
+      echo "Failed to clone dotfiles-private repository"
+      exit 1
+    fi
+  fi
+
+  cd ~/.dotfiles-private || {
+    echo "Failed to enter .dotfiles-private directory"
+    exit 1
+  }
+
+  ansible-playbook ansible/fsa.yml -D --ask-become-pass --ask-vault-pass
+
+  git remote set-url origin "git@github.com:$GITHUBUSER/.dotfiles-private.git"
+  git remote -v
+}
+
+# Function to set up dotfiles
+setup_dotfiles() {
+  echo "Setting up dotfiles..."
+
+  if [ -d ~/.dotfiles-cli ]; then
+    echo "dotfiles repository exists...."
+  else
+    echo "Cloning dotfiles repository..."
+    if ! git clone "git@github.com:$GITHUBUSER/.dotfiles-cli.git" ~/.dotfiles-cli; then
+      echo "Failed to clone dotfiles repository"
+      exit 1
+    fi
+  fi
+
+  cd ~/.dotfiles-cli || {
+    echo "Failed to enter .dotfiles-cli directory"
+    exit 1
+  }
+
+  ansible-playbook ansible/fsa.yml -D --ask-become-pass
+
+  echo "Initializing and updating submodules..."
+  git submodule update --init || {
+    echo "Failed to update submodules"
+    exit 1
+  }
+
+  echo "Stowing dotfiles..."
+  stow fish starship nvim.astro || {
+    echo "Failed to stow dotfiles"
+    exit 1
+  }
+}
+
+# Function to change the default shell to fish
+change_shell() {
+  echo "Changing default shell to fish..."
+
+  if ! sudo usermod -s /bin/fish "$USER"; then
+    echo "Failed to change shell"
+    exit 1
+  fi
+}
+
+# Main script execution
+cd ~ || exit 1
+setup_docker
+setup_dotfiles_private
+setup_dotfiles
+change_shell
+
+git config --global user.name "$GITHUBUSER"
+git config --global user.email "$GITHUBUSER@users.noreply.github.com"
+git config --global core.editor nvim
+mkdir -p ~/git
+
+echo ".dotfiles.sh script complete!"
+exit 0
