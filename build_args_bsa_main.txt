@@ -1,0 +1,2 @@
+BASE_IMAGE=ghcr.io/ublue-os/bazzite-dx:stable-43
+IMAGE_NAME=bsa-main
