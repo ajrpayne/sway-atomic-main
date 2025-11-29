@@ -1,0 +1,2 @@
+BASE_IMAGE=ghcr.io/ublue-os/base-main:44
+IMAGE_NAME=fsa-main
