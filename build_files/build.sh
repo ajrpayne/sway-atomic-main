@@ -9,8 +9,28 @@ set -ouex pipefail
 # List of rpmfusion packages can be found here:
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
 
-# this installs a package from fedora repos
-dnf5 install -y tmux 
+# https://pagure.io/workstation-ostree-config/blob/f43/f/common.yaml
+dnf5 install -y \
+  git-core \
+  git-core-doc \
+  buildah \
+  podman \
+  skopeo \
+  slirp4netns \
+  fuse-overlayfs \
+  systemd-container \
+  langpacks-en
+
+# https://pagure.io/workstation-ostree-config/blob/f43/f/packages/common.yaml
+dnf5 install -y \
+  NetworkManager \
+  NetworkManager-bluetooth \
+  NetworkManager-config-connectivity-fedora \
+  NetworkManager-wifi \
+  NetworkManager-wwan \
+  bc \
+  hostname \
+  mtr
 
 # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/sway-atomic.yaml
 dnf5 install -y \
@@ -62,6 +82,12 @@ dnf5 install -y \
   xdg-desktop-portal-gtk \
   xdg-desktop-portal-wlr \
   xorg-x11-server-Xwayland
+
+# https://github.com/ublue-os/main/blob/main/packages.json
+dnf5 install -y \
+  just \
+  tmux \
+  vim
 
 # https://github.com/ublue-os/main/blob/9a4fca91cf190dbfeba2ff0628cf75efdff8f31c/packages.json
 dnf5 install -y \
