@@ -96,6 +96,40 @@ dnf5 install -y \
   thunar-volman \
   tumbler
 
+dnf5 install -y \
+	NetworkManager-tui \
+  bat \
+  fish \
+  lua5.1 \
+  lua5.1-devel \
+  neovim \
+  python3-pip \
+  python3-neovim \
+  stow \
+  make \
+  zig \
+  ripgrep \
+  go \
+  gdu \
+  tree-sitter-cli \
+  fd-find \
+  fzf \
+  kustomize \
+  helm \
+  kind \
+  k9s \
+  yq \
+	thefuck \
+  zoxide
+
+wget https://luarocks.org/releases/luarocks-3.12.2.tar.gz
+tar zxpf luarocks-3.12.2.tar.gz
+cd luarocks-3.12.2
+./configure --lua-version=5.1 && make && sudo make install
+cd ..
+rm luarocks-3.12.2.tar.gz
+rm -rf luarocks-3.12.2
+
 # Use a COPR Example:
 #
 # dnf5 -y copr enable ublue-os/staging
@@ -103,6 +137,19 @@ dnf5 install -y \
 # Disable COPRs so they don't end up enabled on the final image:
 # dnf5 -y copr disable ublue-os/staging
 
+# Ghostty
+dnf5 -y copr enable scottames/ghostty
+dnf5 install -y ghostty
+# Bottom
+dnf5 -y copr enable atim/bottom
+dnf5 install -y bottom
+# Starship
+dnf5 -y copr enable atim/starship
+dnf5 install -y starship
+# Lazygit
+dnf5 -y copr enable dejan/lazygit
+dnf5 install -y lazygit
+
 #### Example for enabling a System Unit File
 
-systemctl enable podman.socket
+#systemctl enable podman.socket
