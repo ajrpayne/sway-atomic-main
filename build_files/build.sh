@@ -103,6 +103,7 @@ dnf5 install -y \
   lua5.1 \
   lua5.1-devel \
   sqlite \
+  sqlite-devel \
   neovim \
   python3-pip \
   python3-neovim \
