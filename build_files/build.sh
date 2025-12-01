@@ -102,6 +102,7 @@ dnf5 install -y \
   fish \
   lua5.1 \
   lua5.1-devel \
+  sqlite \
   neovim \
   python3-pip \
   python3-neovim \
