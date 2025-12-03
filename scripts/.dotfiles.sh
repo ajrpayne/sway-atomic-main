@@ -10,6 +10,15 @@ setup_ssh() {
   chmod 0700 ~/.ssh
 }
 
+# Function to set up docker
+setup_docker() {
+	echo "Setting up docker..."
+
+	groups
+	sudo usermod -aG docker "$USER"
+	sudo systemctl enable --now docker.socket
+}
+
 # Function to set up dotfiles
 setup_dotfiles() {
   echo "Cloning dotfiles repository..."
@@ -52,6 +61,7 @@ change_shell() {
 # Main script execution
 cd ~ || exit 1
 setup_ssh
+setup_docker
 setup_dotfiles
 change_shell
 
