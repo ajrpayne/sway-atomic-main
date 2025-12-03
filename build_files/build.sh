@@ -116,6 +116,7 @@ dnf5 install -y \
   tree-sitter-cli \
   fd-find \
   fzf \
+  kubernetes-client \
   kustomize \
   helm \
   kind \
