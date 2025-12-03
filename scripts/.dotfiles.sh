@@ -26,7 +26,7 @@ setup_dotfiles() {
   if [ -d ~/.dotfiles-cli ]; then
     echo "dotfiles repository exists...."
   else
-      echo "Cloning dotfiles repository..."
+    echo "Cloning dotfiles repository..."
     if ! git clone https://github.com/ajrpayne/.dotfiles-cli.git ~/.dotfiles-cli; then
       echo "Failed to clone dotfiles repository"
       exit 1
