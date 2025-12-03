@@ -12,20 +12,25 @@ setup_ssh() {
 
 # Function to set up docker
 setup_docker() {
-	echo "Setting up docker..."
+  echo "Setting up docker..."
 
-	groups
-	sudo usermod -aG docker "$USER"
-	sudo systemctl enable --now docker.socket
+  groups
+  sudo usermod -aG docker "$USER"
+  sudo systemctl enable docker.socket
 }
 
 # Function to set up dotfiles
 setup_dotfiles() {
-  echo "Cloning dotfiles repository..."
+  echo "Setting up dotfiles..."
 
-  if ! git clone https://github.com/ajrpayne/.dotfiles-cli.git ~/.dotfiles-cli; then
-    echo "Failed to clone dotfiles repository"
-    exit 1
+  if [ -d ~/.dotfiles-cli ]; then
+    echo "dotfiles repository exists...."
+  else
+      echo "Cloning dotfiles repository..."
+    if ! git clone https://github.com/ajrpayne/.dotfiles-cli.git ~/.dotfiles-cli; then
+      echo "Failed to clone dotfiles repository"
+      exit 1
+    fi
   fi
 
   cd ~/.dotfiles-cli || {
