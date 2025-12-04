@@ -123,6 +123,11 @@ dnf5 install -y \
   k9s \
   yq \
 	thefuck \
+  distrobox \
+  fastfetch \
+  patch \
+  seahorse \
+  swappy \
   zoxide
 
 wget https://luarocks.org/releases/luarocks-3.12.2.tar.gz
