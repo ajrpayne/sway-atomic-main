@@ -128,6 +128,7 @@ dnf5 install -y \
   patch \
   seahorse \
   swappy \
+  ansible \
   zoxide
 
 wget https://luarocks.org/releases/luarocks-3.12.2.tar.gz

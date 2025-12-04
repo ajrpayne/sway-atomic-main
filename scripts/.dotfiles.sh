@@ -2,24 +2,7 @@
 
 set -ouex pipefail
 
-# Function to set up SSH
-setup_ssh() {
-  echo "Setting up SSH..."
-
-  mkdir -p ~/.ssh
-  chmod 0700 ~/.ssh
-
-  if [ -f /etc/wsl.conf ]; then
-    echo "In WSL instance"
-    if ! cp "/mnt/c/Users/$(powershell.exe '$env:UserName' | tr -d '\r')/Downloads/.ssh/*" ~/.ssh/; then
-      echo "Failed to copy SSH"
-    else
-      chmod 0600 ~/.ssh/*
-    fi
-  else
-    echo "Not in WSL instance"
-  fi
-}
+read -rp "Enter your GITHUB USER: " GITHUBUSER
 
 # Function to set up docker
 setup_docker() {
@@ -30,6 +13,32 @@ setup_docker() {
   sudo systemctl enable docker.socket
 }
 
+# Function to set up dotfiles-private
+setup_dotfiles_private() {
+  echo "Setting up dotfiles-private..."
+
+  if [ -d ~/.dotfiles-private ]; then
+    echo "dotfiles-private repository exists...."
+  else
+    echo "Cloning dotfiles-private repository..."
+    read -rp "Enter your GITHUB PAT: " GITHUBPAT
+    if ! git clone "https://$GITHUBUSER:$GITHUBPAT@github.com/$GITHUBUSER/.dotfiles-private.git" ~/.dotfiles-private; then
+      echo "Failed to clone dotfiles-private repository"
+      exit 1
+    fi
+  fi
+
+  cd ~/.dotfiles-private || {
+    echo "Failed to enter .dotfiles-private directory"
+    exit 1
+  }
+
+  ansible-playbook ansible/fsa.yml -D --ask-become-pass --ask-vault-pass
+
+  git remote set-url origin "git@github.com:$GITHUBUSER/.dotfiles-private.git"
+  git remote -v
+}
+
 # Function to set up dotfiles
 setup_dotfiles() {
   echo "Setting up dotfiles..."
@@ -38,7 +47,7 @@ setup_dotfiles() {
     echo "dotfiles repository exists...."
   else
     echo "Cloning dotfiles repository..."
-    if ! git clone "https://github.com/$USER/.dotfiles-cli.git" ~/.dotfiles-cli; then
+    if ! git clone "git@github.com:$GITHUBUSER/.dotfiles-cli.git" ~/.dotfiles-cli; then
       echo "Failed to clone dotfiles repository"
       exit 1
     fi
@@ -60,8 +69,6 @@ setup_dotfiles() {
     echo "Failed to stow dotfiles"
     exit 1
   }
-
-  cd ~ || exit 1
 }
 
 # Function to change the default shell to fish
@@ -76,8 +83,8 @@ change_shell() {
 
 # Main script execution
 cd ~ || exit 1
-setup_ssh
 setup_docker
+setup_dotfiles_private
 setup_dotfiles
 change_shell
 
