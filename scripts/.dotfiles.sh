@@ -8,6 +8,17 @@ setup_ssh() {
 
   mkdir -p ~/.ssh
   chmod 0700 ~/.ssh
+
+  if [ -f /etc/wsl.conf ]; then
+    echo "In WSL instance"
+    if ! cp "/mnt/c/Users/$(powershell.exe '$env:UserName' | tr -d '\r')/Downloads/.ssh/*" ~/.ssh/; then
+      echo "Failed to copy SSH"
+    else
+      chmod 0600 ~/.ssh/*
+    fi
+  else
+    echo "Not in WSL instance"
+  fi
 }
 
 # Function to set up docker
@@ -27,7 +38,7 @@ setup_dotfiles() {
     echo "dotfiles repository exists...."
   else
     echo "Cloning dotfiles repository..."
-    if ! git clone https://github.com/ajrpayne/.dotfiles-cli.git ~/.dotfiles-cli; then
+    if ! git clone "https://github.com/$USER/.dotfiles-cli.git" ~/.dotfiles-cli; then
       echo "Failed to clone dotfiles repository"
       exit 1
     fi
