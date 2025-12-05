@@ -161,4 +161,4 @@ dnf5 install -y lazygit
 
 #### Example for enabling a System Unit File
 
-#systemctl enable podman.socket
+systemctl enable podman.socket
