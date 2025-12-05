@@ -134,7 +134,7 @@ dnf5 install -y \
 wget https://luarocks.org/releases/luarocks-3.12.2.tar.gz
 tar zxpf luarocks-3.12.2.tar.gz
 cd luarocks-3.12.2
-./configure --lua-version=5.1 --sysconfdir=/etc && make && make install
+./configure --lua-version=5.1 --sysconfdir=/etc --prefix=/usr --rocks-tree=/usr/local && make && make install
 cd ..
 rm luarocks-3.12.2.tar.gz
 rm -rf luarocks-3.12.2
