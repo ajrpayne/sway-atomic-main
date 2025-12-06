@@ -10,7 +10,6 @@ setup_docker() {
 
   groups
   sudo usermod -aG docker "$USER"
-  sudo systemctl enable docker.socket
 }
 
 # Function to set up dotfiles-private
