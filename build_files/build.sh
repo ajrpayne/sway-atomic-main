@@ -142,11 +142,12 @@ rm -rf luarocks-3.12.2
 # Citrix
 dnf5 install -y gtk2 gtkglext-libs libcxx speexdsp xdpyinfo
 
-wget \
-'https://downloads.citrix.com/25463/ICAClient-rhel-25.08.0.88-0.x86_64.rpm?__gda__=exp=1765003842~acl=/*~hmac=5b9f5e5c1c24429a94fc0fc00238e851961677ed557516a4632b52a7609ca332' \
--O 'ICAClient-rhel-25.08.0.88-0.x86_64.rpm'
-rpm -i --nodeps ./ICAClient-rhel-25.08.0.88-0.x86_64.rpm
-rm ./ICAClient-rhel-25.08.0.88-0.x86_64.rpm
+# wget \
+# 'https://downloads.citrix.com/25463/ICAClient-rhel-25.08.0.88-0.x86_64.rpm?__gda__=exp=1765003842~acl=/*~hmac=5b9f5e5c1c24429a94fc0fc00238e851961677ed557516a4632b52a7609ca332' \
+# -O 'ICAClient-rhel-25.08.0.88-0.x86_64.rpm'
+# rpm -i --nodeps ./ICAClient-rhel-25.08.0.88-0.x86_64.rpm
+# rm ./ICAClient-rhel-25.08.0.88-0.x86_64.rpm
+rpm -i --nodeps /ctx/ICAClient-rhel-25.08.0.88-0.x86_64.rpm
 
 wget \
 'https://cdn.zoom.us/prod/vdi/6.3.13.26340/zoomvdi-universal-plugin-centos_6.3.13.rpm'
