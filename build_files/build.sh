@@ -142,7 +142,7 @@ rm -rf luarocks-3.12.2
 # Citrix
 dnf5 install -y gtk2 gtkglext-libs libcxx speexdsp xdpyinfo
 
-wget https://downloads.citrix.com/25463/ICAClient-rhel-25.08.0.88-0.x86_64.rpm
+wget https://downloads.citrix.com/25463/ICAClient-rhel-25.08.0.88-0.x86_64.rpm?__gda__=exp=1764992270~acl=/*~hmac=2af9126283b32bde67de3e08badcec20209d8a61420643a05fc3c303d6892509
 rpm -i --nodeps ./ICAClient-rhel-25.08.0.88-0.x86_64.rpm
 rm ./ICAClient-rhel-25.08.0.88-0.x86_64.rpm
 
