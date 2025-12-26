@@ -14,10 +14,10 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   dnf5 config-manager setopt fedora-multimedia.enabled=1
 fi
 if [[ "${IMAGE_NAME:-undefined}" == "fsa-main" ]]; then
-  dnf5 swap -y noopenh264 mozilla-openh264
+  dnf5 -y swap noopenh264 mozilla-openh264
 fi
 if [[ "${IMAGE_NAME:-undefined}" == "bsa-main" ]]; then
-  dnf5 install -y --setopt=install_weak_deps=True \
+  dnf5 -y install --setopt=install_weak_deps=True \
     mozilla-openh264 \
     openh264
 
@@ -25,14 +25,14 @@ if [[ "${IMAGE_NAME:-undefined}" == "bsa-main" ]]; then
     xwaylandvideobridge
 
   # Bazzite removed
-  dnf5 install -y --setopt=install_weak_deps=True \
+  dnf5 -y install --setopt=install_weak_deps=True \
     firefox \
     firefox-langpacks \
     toolbox
 fi
 
 # https://pagure.io/workstation-ostree-config/blob/f43/f/common.yaml
-dnf5 install -y --setopt=install_weak_deps=True \
+dnf5 -y install --setopt=install_weak_deps=True \
   git-core \
   git-core-doc \
   buildah \
@@ -44,7 +44,7 @@ dnf5 install -y --setopt=install_weak_deps=True \
   langpacks-en
 
 # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/common.yaml
-dnf5 install -y --setopt=install_weak_deps=True \
+dnf5 -y install --setopt=install_weak_deps=True \
   NetworkManager \
   NetworkManager-bluetooth \
   NetworkManager-config-connectivity-fedora \
@@ -55,7 +55,7 @@ dnf5 install -y --setopt=install_weak_deps=True \
   mtr
 
 # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/sway-atomic.yaml
-dnf5 install -y --setopt=install_weak_deps=True --allowerasing \
+dnf5 -y install --setopt=install_weak_deps=True --allowerasing \
   NetworkManager-l2tp-gnome \
   NetworkManager-libreswan-gnome \
   NetworkManager-openconnect-gnome \
@@ -106,19 +106,19 @@ dnf5 install -y --setopt=install_weak_deps=True --allowerasing \
   xorg-x11-server-Xwayland
 
 # https://github.com/ublue-os/main/blob/main/packages.json
-dnf5 install -y --setopt=install_weak_deps=True \
+dnf5 -y install --setopt=install_weak_deps=True \
   just \
   tmux \
   vim
 
 # https://github.com/ublue-os/main/blob/9a4fca91cf190dbfeba2ff0628cf75efdff8f31c/packages.json
-dnf5 install -y --setopt=install_weak_deps=True \
+dnf5 -y install --setopt=install_weak_deps=True \
   clipman \
   gvfs-mtp \
   thunar-volman \
   tumbler
 
-dnf5 install -y --setopt=install_weak_deps=True \
+dnf5 -y install --setopt=install_weak_deps=True \
   NetworkManager-tui \
   bat \
   fish \
@@ -177,23 +177,23 @@ rm -rf luarocks-3.12.2
 
 # Ghostty
 dnf5 -y copr enable scottames/ghostty
-dnf5 install -y ghostty
+dnf5 -y install ghostty --setopt=install_weak_deps=True
 dnf5 -y copr disable scottames/ghostty
 # Bottom
 dnf5 -y copr enable atim/bottom
-dnf5 install -y bottom
+dnf5 -y install bottom --setopt=install_weak_deps=True
 dnf5 -y copr disable atim/bottom
 # Starship
 dnf5 -y copr enable atim/starship
-dnf5 install -y starship
+dnf5 -y install starship --setopt=install_weak_deps=True
 dnf5 -y copr disable atim/starship
 # Lazygit
 dnf5 -y copr enable dejan/lazygit
-dnf5 install -y lazygit
+dnf5 -y install lazygit --setopt=install_weak_deps=True
 dnf5 -y copr disable dejan/lazygit
 # Homebrew
 dnf5 -y copr enable ublue-os/packages
-dnf5 install -y ublue-brew
+dnf5 -y install ublue-brew --setopt=install_weak_deps=True
 dnf5 -y copr disable ublue-os/packages
 
 # Cliphist
@@ -210,12 +210,8 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   sed -i 's|foot|ghostty|g' /etc/sway/config
   sed -i 's|default.jxl|default-dark.jxl|g' /etc/sway/config
 
-  # Citrix
-  dnf5 install -y --setopt=install_weak_deps=True \
-    gtkglext-libs \
-    libcxx \
-    speexdsp \
-    xdpyinfo
+  # Zen
+  dnf5 -y copr enable sneexy/zen-browser
 fi
 
 #### Example for enabling a System Unit File
