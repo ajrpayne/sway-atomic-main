@@ -96,6 +96,7 @@ change_shell
 git config --global user.name "$GITHUBUSER"
 git config --global user.email "$GITHUBUSER@users.noreply.github.com"
 git config --global core.editor nvim
+git lfs install
 mkdir -p ~/git
 
 echo ".dotfiles.sh script complete!"
