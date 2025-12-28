@@ -70,7 +70,7 @@ setup_dotfiles() {
   }
 
   echo "Stowing dotfiles..."
-  stow fish starship nvim.astro || {
+  stow ghostty fish starship nvim.astro || {
     echo "Failed to stow dotfiles"
     exit 1
   }
