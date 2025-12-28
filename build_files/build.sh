@@ -155,6 +155,7 @@ dnf5 -y install --setopt=install_weak_deps=True \
   mpv \
   celluloid \
   gammastep \
+  gammastep-indicator \
   ffmpegthumbnailer \
   ffmpegthumbnailer-libs \
   htop \
@@ -217,6 +218,8 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   dnf5 -y copr disable sneexy/zen-browser
   mv /var/opt/zen /usr/lib/opt/zen
   echo "L /opt/zen - - - - ../../usr/lib/opt/zen" >>/usr/lib/tmpfiles.d/main-opt-fix.conf
+  # Warp
+  dnf5 -y install cloudflare-warp --enable-repo=cloudflare-warp --setopt=install_weak_deps=True
 fi
 
 #### Example for enabling a System Unit File
