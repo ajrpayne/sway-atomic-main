@@ -210,8 +210,13 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   sed -i 's|foot|ghostty|g' /etc/sway/config
   sed -i 's|default.jxl|default-dark.jxl|g' /etc/sway/config
 
+  mkdir -p /var/opt
   # Zen
   dnf5 -y copr enable sneexy/zen-browser
+  dnf5 -y install zen-browser --setopt=install_weak_deps=True
+  dnf5 -y copr disable sneexy/zen-browser
+  mv /var/opt/zen /usr/lib/opt/zen
+  echo "L /opt/zen - - - - ../../usr/lib/opt/zen" >>/usr/lib/tmpfiles.d/main-opt-fix.conf
 fi
 
 #### Example for enabling a System Unit File
