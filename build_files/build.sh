@@ -220,6 +220,8 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   echo "L /opt/zen - - - - ../../usr/lib/opt/zen" >>/usr/lib/tmpfiles.d/main-opt-fix.conf
   # Warp
   dnf5 -y install cloudflare-warp --enable-repo=cloudflare-warp --setopt=install_weak_deps=True
+  mv /var/opt/cloudflare-warp /usr/lib/opt/cloudflare-warp
+  echo "L /opt/cloudflare-warp - - - - ../../usr/lib/opt/cloudflare-warp" >>/usr/lib/tmpfiles.d/main-opt-fix.conf
 fi
 
 #### Example for enabling a System Unit File
