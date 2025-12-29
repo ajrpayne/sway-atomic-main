@@ -208,8 +208,14 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   # Configs
   cp -r /ctx/etc/* /etc/
 
-  sed -i 's|foot|ghostty|g' /etc/sway/config
-  sed -i 's|default.jxl|default-dark.jxl|g' /etc/sway/config
+  sed -i \
+    -e 's|foot|ghostty|g' \
+    -e 's|default.jxl|default-dark.jxl|g' \
+    /etc/sway/config
+  sed -i \
+    -e '/"temperature": {/a\        "interval": 60,' \
+    -e 's|// "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input"|"hwmon-path": "/sys/devices/platform/coretemp.0/hwmon/hwmon5/temp1_input"|g' \
+    /etc/xdg/waybar/config.jsonc
 
   mkdir -p /var/opt
   # Zen
