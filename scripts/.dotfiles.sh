@@ -70,12 +70,12 @@ setup_dotfiles() {
   }
 
   echo "Stowing dotfiles..."
-  stow ghostty fish starship nvim.astro || {
+  stow fish starship nvim.astro || {
     echo "Failed to stow dotfiles"
     exit 1
   }
   if [[ "$(hostnamectl status --json=short | jq -r .DefaultHostname)" =~ ^(bazzite)$ ]]; then
-    stow gammastep autostart || {
+    stow ghostty gammastep autostart || {
       echo "Failed to stow dotfiles"
       exit 1
     }

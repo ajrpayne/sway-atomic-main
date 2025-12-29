@@ -159,7 +159,8 @@ dnf5 -y install --setopt=install_weak_deps=True \
   ffmpegthumbnailer \
   ffmpegthumbnailer-libs \
   htop \
-  git-lfs
+  git-lfs \
+  expect
 
 curl -sLO \
   'https://luarocks.org/releases/luarocks-3.12.2.tar.gz'
@@ -177,10 +178,6 @@ rm -rf luarocks-3.12.2
 # Disable COPRs so they don't end up enabled on the final image:
 # dnf5 -y copr disable ublue-os/staging
 
-# Ghostty
-dnf5 -y copr enable scottames/ghostty
-dnf5 -y install ghostty --setopt=install_weak_deps=True
-dnf5 -y copr disable scottames/ghostty
 # Bottom
 dnf5 -y copr enable atim/bottom
 dnf5 -y install bottom --setopt=install_weak_deps=True
@@ -193,10 +190,6 @@ dnf5 -y copr disable atim/starship
 dnf5 -y copr enable dejan/lazygit
 dnf5 -y install lazygit --setopt=install_weak_deps=True
 dnf5 -y copr disable dejan/lazygit
-# Homebrew
-dnf5 -y copr enable ublue-os/packages
-dnf5 -y install ublue-brew --setopt=install_weak_deps=True
-dnf5 -y copr disable ublue-os/packages
 
 # Cliphist
 curl -sLo 'cliphist' \
@@ -224,6 +217,15 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
     -e 's|// "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input"|"hwmon-path": "/sys/devices/platform/coretemp.0/hwmon/hwmon5/temp1_input"|g' \
     /etc/xdg/waybar/config.jsonc
 
+  # Ghostty
+  dnf5 -y copr enable scottames/ghostty
+  dnf5 -y install ghostty --setopt=install_weak_deps=True
+  dnf5 -y copr disable scottames/ghostty
+  # Homebrew
+  dnf5 -y copr enable ublue-os/packages
+  dnf5 -y install ublue-brew --setopt=install_weak_deps=True
+  dnf5 -y copr disable ublue-os/packages
+
   ls -lah /var
   mkdir -p /var/opt
   # Zen
@@ -237,6 +239,8 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   mv /var/opt/cloudflare-warp /usr/lib/opt/cloudflare-warp
   echo "L /opt/cloudflare-warp - - - - ../../usr/lib/opt/cloudflare-warp" >>/usr/lib/tmpfiles.d/main-opt-fix.conf
   rm -rf /var/opt
+else
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 #### Example for enabling a System Unit File
