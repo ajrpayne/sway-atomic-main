@@ -74,6 +74,12 @@ setup_dotfiles() {
     echo "Failed to stow dotfiles"
     exit 1
   }
+  if [[ "$(hostnamectl status --json=short | jq -r .DefaultHostname)" =~ ^(bazzite)$ ]]; then
+    stow gammastep autostart || {
+      echo "Failed to stow dotfiles"
+      exit 1
+    }
+  fi
 }
 
 # Function to change the default shell to fish
