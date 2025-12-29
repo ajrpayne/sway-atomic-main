@@ -203,6 +203,13 @@ curl -sLo 'cliphist' \
   'https://github.com/sentriz/cliphist/releases/download/v0.7.0/v0.7.0-linux-amd64'
 mv cliphist /usr/bin/cliphist
 chmod +x /usr/bin/cliphist
+# Tm
+curl -sLo 'tm.tar.gz' \
+  'https://codeberg.org/Ganneff/tm/releases/download/v0.9.2/tm-x86_64-unknown-linux-musl.tar.gz'
+tar zxpf tm.tar.gz
+mv tm /usr/bin/tm
+chmod +x /usr/bin/tm
+rm tm.tar.gz
 
 if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   # Configs
@@ -217,6 +224,7 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
     -e 's|// "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input"|"hwmon-path": "/sys/devices/platform/coretemp.0/hwmon/hwmon5/temp1_input"|g' \
     /etc/xdg/waybar/config.jsonc
 
+  ls -lah /var
   mkdir -p /var/opt
   # Zen
   dnf5 -y copr enable sneexy/zen-browser
@@ -228,10 +236,12 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   dnf5 -y install cloudflare-warp --enable-repo=cloudflare-warp --setopt=install_weak_deps=True
   mv /var/opt/cloudflare-warp /usr/lib/opt/cloudflare-warp
   echo "L /opt/cloudflare-warp - - - - ../../usr/lib/opt/cloudflare-warp" >>/usr/lib/tmpfiles.d/main-opt-fix.conf
+  rm -rf /var/opt
 fi
 
 #### Example for enabling a System Unit File
 
 systemctl enable podman.socket
 
+ls -lah
 echo "build.sh script complete!"
