@@ -161,7 +161,8 @@ dnf5 -y install --setopt=install_weak_deps=True \
   htop \
   git-lfs
 
-wget https://luarocks.org/releases/luarocks-3.12.2.tar.gz
+curl -sLO \
+  'https://luarocks.org/releases/luarocks-3.12.2.tar.gz'
 tar zxpf luarocks-3.12.2.tar.gz
 cd luarocks-3.12.2
 ./configure --lua-version=5.1 --sysconfdir=/etc --prefix=/usr --rocks-tree=/usr/local && make && make install
@@ -198,9 +199,8 @@ dnf5 -y install ublue-brew --setopt=install_weak_deps=True
 dnf5 -y copr disable ublue-os/packages
 
 # Cliphist
-curl \
-  -Ls 'https://github.com/sentriz/cliphist/releases/download/v0.7.0/v0.7.0-linux-amd64' \
-  -o 'cliphist'
+curl -sLo 'cliphist' \
+  'https://github.com/sentriz/cliphist/releases/download/v0.7.0/v0.7.0-linux-amd64'
 mv cliphist /usr/bin/cliphist
 chmod +x /usr/bin/cliphist
 
