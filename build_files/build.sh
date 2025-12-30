@@ -218,6 +218,18 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   dnf5 -y install ublue-brew --setopt=install_weak_deps=True
   dnf5 -y copr disable ublue-os/packages
 
+  # Configs
+  cp -r /ctx/etc/* /etc/
+
+  sed -i \
+    -e 's|foot|ghostty|g' \
+    -e 's|default.jxl|default-dark.jxl|g' \
+    /etc/sway/config
+  sed -i \
+    -e '/"temperature": {/a\        "interval": 60,' \
+    -e 's|// "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input"|"hwmon-path": "/sys/devices/platform/coretemp.0/hwmon/hwmon5/temp1_input"|g' \
+    /etc/xdg/waybar/config.jsonc
+
   ls -lah /var
   mkdir -p /var/opt
   # Zen
@@ -231,18 +243,6 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   mv /var/opt/cloudflare-warp /usr/lib/opt/cloudflare-warp
   echo "L /opt/cloudflare-warp - - - - ../../usr/lib/opt/cloudflare-warp" >>/usr/lib/tmpfiles.d/main-opt-fix.conf
   rm -rf /var/opt
-
-  # Configs
-  cp -r /ctx/etc/* /etc/
-
-  sed -i \
-    -e 's|foot|ghostty|g' \
-    -e 's|default.jxl|default-dark.jxl|g' \
-    /etc/sway/config
-  sed -i \
-    -e '/"temperature": {/a\        "interval": 60,' \
-    -e 's|// "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input"|"hwmon-path": "/sys/devices/platform/coretemp.0/hwmon/hwmon5/temp1_input"|g' \
-    /etc/xdg/waybar/config.jsonc
 else
   # Homebrew
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
