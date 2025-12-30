@@ -250,9 +250,6 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   mv /var/opt/cloudflare-warp /usr/lib/opt/cloudflare-warp
   echo "L /opt/cloudflare-warp - - - - ../../usr/lib/opt/cloudflare-warp" >>/usr/lib/tmpfiles.d/main-opt-fix.conf
   rm -rf /var/opt
-else
-  # Homebrew
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 #### Example for enabling a System Unit File
