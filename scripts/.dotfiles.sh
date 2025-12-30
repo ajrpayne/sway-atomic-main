@@ -75,9 +75,6 @@ setup_dotfiles() {
       echo "Failed to stow dotfiles"
       exit 1
     }
-  else
-    # Homebrew
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
   stow fish starship nvim.astro || {
     echo "Failed to stow dotfiles"
