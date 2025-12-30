@@ -40,9 +40,6 @@ dnf5 -y install --setopt=install_weak_deps=True \
   buildah \
   podman \
   skopeo \
-  slirp4netns \
-  fuse-overlayfs \
-  systemd-container \
   langpacks-en
 
 # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/common.yaml
@@ -138,6 +135,11 @@ chmod +x /usr/bin/tm
 rm tm.tar.gz
 
 if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
+  # https://pagure.io/workstation-ostree-config/blob/f43/f/common.yaml
+  dnf5 -y install --setopt=install_weak_deps=True \
+    slirp4netns \
+    fuse-overlayfs \
+    systemd-container
 
   # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/common.yaml
   dnf5 -y install --setopt=install_weak_deps=True \
