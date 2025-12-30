@@ -82,6 +82,7 @@ dnf5 -y install --setopt=install_weak_deps=True \
   kustomize \
   helm \
   k9s \
+  jq \
   yq \
   thefuck \
   fastfetch \
