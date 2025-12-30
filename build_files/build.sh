@@ -12,6 +12,8 @@ set -ouex pipefail
 if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   dnf5 config-manager setopt fedora-cisco-openh264.enabled=0
   dnf5 config-manager setopt fedora-multimedia.enabled=1
+else
+  ln -s /home /var/home
 fi
 if [[ "${IMAGE_NAME:-undefined}" == "fsa-main" ]]; then
   dnf5 -y swap noopenh264 mozilla-openh264
@@ -113,6 +115,10 @@ dnf5 -y copr disable atim/starship
 dnf5 -y copr enable dejan/lazygit
 dnf5 -y install lazygit --setopt=install_weak_deps=True
 dnf5 -y copr disable dejan/lazygit
+# Homebrew
+dnf5 -y copr enable ublue-os/packages
+dnf5 -y install ublue-brew --setopt=install_weak_deps=True
+dnf5 -y copr disable ublue-os/packages
 
 # Luarocks
 curl -sLO \
@@ -214,10 +220,6 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   dnf5 -y copr enable scottames/ghostty
   dnf5 -y install ghostty --setopt=install_weak_deps=True
   dnf5 -y copr disable scottames/ghostty
-  # Homebrew
-  dnf5 -y copr enable ublue-os/packages
-  dnf5 -y install ublue-brew --setopt=install_weak_deps=True
-  dnf5 -y copr disable ublue-os/packages
 
   # Cliphist
   curl -sLo 'cliphist' \
