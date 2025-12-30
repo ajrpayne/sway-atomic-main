@@ -45,64 +45,13 @@ dnf5 -y install --setopt=install_weak_deps=True \
 
 # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/common.yaml
 dnf5 -y install --setopt=install_weak_deps=True \
-  NetworkManager \
-  NetworkManager-bluetooth \
-  NetworkManager-config-connectivity-fedora \
-  NetworkManager-wifi \
-  NetworkManager-wwan \
   bc \
   hostname \
   mtr
 
 # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/sway-atomic.yaml
 dnf5 -y install --setopt=install_weak_deps=True --allowerasing \
-  NetworkManager-l2tp-gnome \
-  NetworkManager-libreswan-gnome \
-  NetworkManager-openconnect-gnome \
-  NetworkManager-openvpn-gnome \
-  NetworkManager-sstp-gnome \
-  NetworkManager-vpnc-gnome \
-  Thunar \
-  blueman \
-  bolt \
-  dunst \
-  fprintd-pam \
-  gnome-keyring-pam \
-  gnome-themes-extra \
-  grim \
-  gvfs \
-  gvfs-smb \
-  imv \
-  kanshi \
-  lxqt-policykit \
-  network-manager-applet \
-  pavucontrol \
-  pinentry-gnome3 \
-  playerctl \
-  plymouth-system-theme \
-  polkit \
-  pulseaudio-utils \
-  sddm \
-  sddm-wayland-sway \
-  slurp \
-  sway \
-  sway-config-fedora \
-  swaybg \
-  swayidle \
-  swaylock \
-  system-config-printer \
-  thunar-archive-plugin \
-  tuned-ppd \
-  tuned-switcher \
-  waybar \
-  wev \
-  wl-clipboard \
-  wlr-randr \
-  wlsunset \
-  xarchiver \
-  xdg-desktop-portal-gtk \
-  xdg-desktop-portal-wlr \
-  xorg-x11-server-Xwayland
+  wl-clipboard
 
 # https://github.com/ublue-os/main/blob/main/packages.json
 dnf5 -y install --setopt=install_weak_deps=True \
@@ -110,15 +59,7 @@ dnf5 -y install --setopt=install_weak_deps=True \
   tmux \
   vim
 
-# https://github.com/ublue-os/main/blob/9a4fca91cf190dbfeba2ff0628cf75efdff8f31c/packages.json
 dnf5 -y install --setopt=install_weak_deps=True \
-  clipman \
-  gvfs-mtp \
-  thunar-volman \
-  tumbler
-
-dnf5 -y install --setopt=install_weak_deps=True \
-  NetworkManager-tui \
   bat \
   fish \
   lua5.1 \
@@ -143,20 +84,11 @@ dnf5 -y install --setopt=install_weak_deps=True \
   k9s \
   yq \
   thefuck \
-  distrobox \
   fastfetch \
   patch \
-  seahorse \
-  swappy \
   ansible \
   zoxide \
   rustup \
-  mpv \
-  celluloid \
-  gammastep \
-  gammastep-indicator \
-  ffmpegthumbnailer \
-  ffmpegthumbnailer-libs \
   htop \
   git-lfs \
   expect
@@ -190,11 +122,6 @@ cd luarocks-3.12.2
 cd ..
 rm luarocks-3.12.2.tar.gz
 rm -rf luarocks-3.12.2
-# Cliphist
-curl -sLo 'cliphist' \
-  'https://github.com/sentriz/cliphist/releases/download/v0.7.0/v0.7.0-linux-amd64'
-mv cliphist /usr/bin/cliphist
-chmod +x /usr/bin/cliphist
 # Tm
 curl -sLo 'tm.tar.gz' \
   'https://codeberg.org/Ganneff/tm/releases/download/v0.9.2/tm-x86_64-unknown-linux-musl.tar.gz'
@@ -205,9 +132,82 @@ rm tm.tar.gz
 
 if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
 
+  # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/common.yaml
+  dnf5 -y install --setopt=install_weak_deps=True \
+    NetworkManager \
+    NetworkManager-bluetooth \
+    NetworkManager-config-connectivity-fedora \
+    NetworkManager-wifi \
+    NetworkManager-wwan
+
   # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/sway-atomic.yaml
   dnf5 -y install --setopt=install_weak_deps=True --allowerasing \
+    NetworkManager-l2tp-gnome \
+    NetworkManager-libreswan-gnome \
+    NetworkManager-openconnect-gnome \
+    NetworkManager-openvpn-gnome \
+    NetworkManager-sstp-gnome \
+    NetworkManager-vpnc-gnome \
+    Thunar \
+    blueman \
+    bolt \
+    dunst \
+    fprintd-pam \
+    gnome-keyring-pam \
+    gnome-themes-extra \
+    grim \
+    gvfs \
+    gvfs-smb \
+    imv \
+    kanshi \
+    lxqt-policykit \
+    network-manager-applet \
+    pavucontrol \
+    pinentry-gnome3 \
+    playerctl \
+    plymouth-system-theme \
+    polkit \
+    pulseaudio-utils \
+    sddm \
+    sddm-wayland-sway \
+    slurp \
+    sway \
+    sway-config-fedora \
+    swaybg \
+    swayidle \
+    swaylock \
+    system-config-printer \
+    thunar-archive-plugin \
+    tuned-ppd \
+    tuned-switcher \
+    waybar \
+    wev \
+    wlr-randr \
+    wlsunset \
+    xarchiver \
+    xdg-desktop-portal-gtk \
+    xdg-desktop-portal-wlr \
+    xorg-x11-server-Xwayland \
     foot
+
+  # https://github.com/ublue-os/main/blob/9a4fca91cf190dbfeba2ff0628cf75efdff8f31c/packages.json
+  dnf5 -y install --setopt=install_weak_deps=True \
+    clipman \
+    gvfs-mtp \
+    thunar-volman \
+    tumbler
+
+  dnf5 -y install --setopt=install_weak_deps=True \
+    NetworkManager-tui \
+    distrobox \
+    seahorse \
+    swappy \
+    mpv \
+    celluloid \
+    gammastep \
+    gammastep-indicator \
+    ffmpegthumbnailer \
+    ffmpegthumbnailer-libs
 
   # Ghostty
   dnf5 -y copr enable scottames/ghostty
@@ -217,6 +217,12 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   dnf5 -y copr enable ublue-os/packages
   dnf5 -y install ublue-brew --setopt=install_weak_deps=True
   dnf5 -y copr disable ublue-os/packages
+
+  # Cliphist
+  curl -sLo 'cliphist' \
+    'https://github.com/sentriz/cliphist/releases/download/v0.7.0/v0.7.0-linux-amd64'
+  mv cliphist /usr/bin/cliphist
+  chmod +x /usr/bin/cliphist
 
   # Configs
   cp -r /ctx/etc/* /etc/
