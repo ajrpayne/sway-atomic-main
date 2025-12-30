@@ -66,7 +66,6 @@ dnf5 -y install --setopt=install_weak_deps=True --allowerasing \
   blueman \
   bolt \
   dunst \
-  foot \
   fprintd-pam \
   gnome-keyring-pam \
   gnome-themes-extra \
@@ -162,15 +161,6 @@ dnf5 -y install --setopt=install_weak_deps=True \
   git-lfs \
   expect
 
-curl -sLO \
-  'https://luarocks.org/releases/luarocks-3.12.2.tar.gz'
-tar zxpf luarocks-3.12.2.tar.gz
-cd luarocks-3.12.2
-./configure --lua-version=5.1 --sysconfdir=/etc --prefix=/usr --rocks-tree=/usr/local && make && make install
-cd ..
-rm luarocks-3.12.2.tar.gz
-rm -rf luarocks-3.12.2
-
 # Use a COPR Example:
 #
 # dnf5 -y copr enable ublue-os/staging
@@ -191,6 +181,15 @@ dnf5 -y copr enable dejan/lazygit
 dnf5 -y install lazygit --setopt=install_weak_deps=True
 dnf5 -y copr disable dejan/lazygit
 
+# Luarocks
+curl -sLO \
+  'https://luarocks.org/releases/luarocks-3.12.2.tar.gz'
+tar zxpf luarocks-3.12.2.tar.gz
+cd luarocks-3.12.2
+./configure --lua-version=5.1 --sysconfdir=/etc --prefix=/usr --rocks-tree=/usr/local && make && make install
+cd ..
+rm luarocks-3.12.2.tar.gz
+rm -rf luarocks-3.12.2
 # Cliphist
 curl -sLo 'cliphist' \
   'https://github.com/sentriz/cliphist/releases/download/v0.7.0/v0.7.0-linux-amd64'
@@ -205,17 +204,10 @@ chmod +x /usr/bin/tm
 rm tm.tar.gz
 
 if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
-  # Configs
-  cp -r /ctx/etc/* /etc/
 
-  sed -i \
-    -e 's|foot|ghostty|g' \
-    -e 's|default.jxl|default-dark.jxl|g' \
-    /etc/sway/config
-  sed -i \
-    -e '/"temperature": {/a\        "interval": 60,' \
-    -e 's|// "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input"|"hwmon-path": "/sys/devices/platform/coretemp.0/hwmon/hwmon5/temp1_input"|g' \
-    /etc/xdg/waybar/config.jsonc
+  # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/sway-atomic.yaml
+  dnf5 -y install --setopt=install_weak_deps=True --allowerasing \
+    foot
 
   # Ghostty
   dnf5 -y copr enable scottames/ghostty
@@ -239,7 +231,20 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   mv /var/opt/cloudflare-warp /usr/lib/opt/cloudflare-warp
   echo "L /opt/cloudflare-warp - - - - ../../usr/lib/opt/cloudflare-warp" >>/usr/lib/tmpfiles.d/main-opt-fix.conf
   rm -rf /var/opt
+
+  # Configs
+  cp -r /ctx/etc/* /etc/
+
+  sed -i \
+    -e 's|foot|ghostty|g' \
+    -e 's|default.jxl|default-dark.jxl|g' \
+    /etc/sway/config
+  sed -i \
+    -e '/"temperature": {/a\        "interval": 60,' \
+    -e 's|// "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input"|"hwmon-path": "/sys/devices/platform/coretemp.0/hwmon/hwmon5/temp1_input"|g' \
+    /etc/xdg/waybar/config.jsonc
 else
+  # Homebrew
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
