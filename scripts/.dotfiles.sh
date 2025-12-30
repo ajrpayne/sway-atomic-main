@@ -35,6 +35,7 @@ setup_dotfiles_private() {
     echo "Failed to enter .dotfiles-private directory"
     exit 1
   }
+  git pull
 
   ansible-playbook ansible/fsa.yml -D --ask-become-pass --ask-vault-pass
 
@@ -60,9 +61,7 @@ setup_dotfiles() {
     echo "Failed to enter .dotfiles-cli directory"
     exit 1
   }
-
-  ansible-playbook ansible/fsa.yml -D --ask-become-pass
-
+  git pull
   echo "Initializing and updating submodules..."
   git submodule update --init || {
     echo "Failed to update submodules"
@@ -70,16 +69,17 @@ setup_dotfiles() {
   }
 
   echo "Stowing dotfiles..."
-  stow fish starship nvim.astro || {
-    echo "Failed to stow dotfiles"
-    exit 1
-  }
   if [[ "$(hostnamectl status --json=short | jq -r .DefaultHostname)" =~ ^(bazzite)$ ]]; then
+    ansible-playbook ansible/fsa.yml -D --ask-become-pass
     stow ghostty gammastep autostart || {
       echo "Failed to stow dotfiles"
       exit 1
     }
   fi
+  stow fish starship nvim.astro || {
+    echo "Failed to stow dotfiles"
+    exit 1
+  }
 }
 
 # Function to change the default shell to fish
