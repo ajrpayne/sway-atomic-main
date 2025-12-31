@@ -77,10 +77,11 @@ setup_dotfiles_cli() {
       exit 1
     }
   fi
-  stow fish starship nvim.astro || {
+  stow fish starship nvim.astro brew || {
     echo "Failed to stow dotfiles"
     exit 1
   }
+  brew bundle install
 
   git remote set-url origin "git@github.com:$GITHUBUSER/.dotfiles-cli.git"
   git remote -v
