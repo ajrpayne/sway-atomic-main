@@ -81,7 +81,7 @@ setup_dotfiles_cli() {
     echo "Failed to stow dotfiles"
     exit 1
   }
-  brew bundle install
+  brew bundle check --file ~/Brewfile || brew bundle install --file ~/Brewfile
 
   git remote set-url origin "git@github.com:$GITHUBUSER/.dotfiles-cli.git"
   git remote -v
