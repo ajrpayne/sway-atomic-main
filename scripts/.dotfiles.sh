@@ -3,6 +3,9 @@
 set -ouex pipefail
 
 read -rp "Enter your GITHUB USER: " GITHUBUSER
+if [ ! -d ~/.dotfiles-private ] && [ ! -d ./dotfiles-cli ]; then
+  read -rp "Enter your GITHUB PAT: " GITHUBPAT
+fi
 
 # Function to set up docker
 setup_docker() {
@@ -24,7 +27,6 @@ setup_dotfiles_private() {
     echo "dotfiles-private repository exists...."
   else
     echo "Cloning dotfiles-private repository..."
-    read -rp "Enter your GITHUB PAT: " GITHUBPAT
     if ! git clone "https://$GITHUBUSER:$GITHUBPAT@github.com/$GITHUBUSER/.dotfiles-private.git" ~/.dotfiles-private; then
       echo "Failed to clone dotfiles-private repository"
       exit 1
@@ -43,16 +45,16 @@ setup_dotfiles_private() {
   git remote -v
 }
 
-# Function to set up dotfiles
-setup_dotfiles() {
-  echo "Setting up dotfiles..."
+# Function to set up dotfiles-cli
+setup_dotfiles_cli() {
+  echo "Setting up dotfiles-cli..."
 
   if [ -d ~/.dotfiles-cli ]; then
-    echo "dotfiles repository exists...."
+    echo "dotfiles-cli repository exists...."
   else
-    echo "Cloning dotfiles repository..."
-    if ! git clone "git@github.com:$GITHUBUSER/.dotfiles-cli.git" ~/.dotfiles-cli; then
-      echo "Failed to clone dotfiles repository"
+    echo "Cloning dotfiles-cli repository..."
+    if ! git clone "https://$GITHUBUSER:$GITHUBPAT@github.com/$GITHUBUSER/.dotfiles-cli.git" ~/.dotfiles-cli; then
+      echo "Failed to clone dotfiles-cli repository"
       exit 1
     fi
   fi
@@ -68,7 +70,6 @@ setup_dotfiles() {
     exit 1
   }
 
-  echo "Stowing dotfiles..."
   if [[ "$(hostnamectl status --json=short | jq -r .DefaultHostname)" =~ ^(bazzite)$ ]]; then
     ansible-playbook ansible/fsa.yml -D --ask-become-pass
     stow ghostty gammastep autostart || {
@@ -80,6 +81,9 @@ setup_dotfiles() {
     echo "Failed to stow dotfiles"
     exit 1
   }
+
+  git remote set-url origin "git@github.com:$GITHUBUSER/.dotfiles-cli.git"
+  git remote -v
 }
 
 # Function to change the default shell to fish
@@ -96,7 +100,7 @@ change_shell() {
 cd ~ || exit 1
 setup_docker
 setup_dotfiles_private
-setup_dotfiles
+setup_dotfiles_cli
 change_shell
 
 git config --global user.name "$GITHUBUSER"
