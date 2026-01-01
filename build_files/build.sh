@@ -66,6 +66,7 @@ dnf5 -y install --setopt=install_weak_deps=True \
   sqlite \
   sqlite-devel \
   neovim \
+  python3-devel \
   python3-pip \
   python3-neovim \
   stow \
