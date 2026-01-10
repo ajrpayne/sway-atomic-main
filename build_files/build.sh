@@ -49,7 +49,7 @@ dnf5 -y install --setopt=install_weak_deps=True \
   mtr
 
 # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/sway-atomic.yaml
-dnf5 -y install --setopt=install_weak_deps=True --allowerasing \
+dnf5 -y install --setopt=install_weak_deps=True \
   wl-clipboard
 
 # https://github.com/ublue-os/main/blob/main/packages.json
@@ -91,7 +91,6 @@ dnf5 -y install --setopt=install_weak_deps=True \
   zoxide \
   rustup \
   htop \
-  git-lfs \
   expect
 
 # Use a COPR Example:
@@ -152,6 +151,11 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
 
   # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/sway-atomic.yaml
   dnf5 -y install --setopt=install_weak_deps=True --allowerasing \
+    sddm-wayland-sway \
+    sway-config-fedora
+
+  # https://pagure.io/workstation-ostree-config/blob/f43/f/packages/sway-atomic.yaml
+  dnf5 -y install --setopt=install_weak_deps=True \
     NetworkManager-l2tp-gnome \
     NetworkManager-libreswan-gnome \
     NetworkManager-openconnect-gnome \
@@ -179,10 +183,8 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
     polkit \
     pulseaudio-utils \
     sddm \
-    sddm-wayland-sway \
     slurp \
     sway \
-    sway-config-fedora \
     swaybg \
     swayidle \
     swaylock \
@@ -208,7 +210,6 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
     tumbler
 
   dnf5 -y install --setopt=install_weak_deps=True \
-    NetworkManager-tui \
     distrobox \
     seahorse \
     swappy \
