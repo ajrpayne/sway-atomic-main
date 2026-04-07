@@ -74,10 +74,6 @@ dnf5 -y install --setopt=install_weak_deps=True \
   go \
   gdu \
   tree-sitter-cli \
-  kubernetes-client \
-  kustomize \
-  helm \
-  k9s \
   jq \
   yq \
   fastfetch \
