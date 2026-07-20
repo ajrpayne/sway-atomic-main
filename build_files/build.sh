@@ -19,6 +19,9 @@ if [[ "${IMAGE_NAME:-undefined}" =~ ^(fsa-main|bsa-main)$ ]]; then
   dnf5 config-manager setopt fedora-multimedia.enabled=1
 else
   ln -s /home /var/home
+  dnf5 -y install --setopt=install_weak_deps=True \
+    git-core \
+    git-core-doc
   dnf -y group install development-tools
   dnf5 -y install \
     awk \
