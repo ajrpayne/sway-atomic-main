@@ -19,7 +19,7 @@ wsl --unregister FedoraLinux-44
 wsl --install FedoraLinux-44 -n --location "$FOLDER"
 .\wsl\wsl.ps1
 sudo passwd "$USER"
+exit
 brew bundle install --file ~/Brewfile --verbose
-#brew cleanup --prune=all
 nvim
 ```
